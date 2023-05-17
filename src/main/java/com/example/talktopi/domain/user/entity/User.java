@@ -51,7 +51,4 @@ public class User {
 
     @Column
     private String introduction;
-
-    @Column
-    private int manner;
 }
