@@ -1,8 +1,12 @@
 package com.example.talktopi.domain.user.service;
 
+import com.example.talktopi.domain.user.controller.dto.request.LoginRequest;
 import com.example.talktopi.domain.user.controller.dto.request.SignupRequest;
+import com.example.talktopi.domain.user.controller.dto.response.TokenResponse;
 import com.example.talktopi.domain.user.entity.User;
 import com.example.talktopi.domain.user.exception.AlreadyExistException;
+import com.example.talktopi.domain.user.exception.PasswordNotMatchesException;
+import com.example.talktopi.domain.user.exception.UserNotFoundException;
 import com.example.talktopi.domain.user.repository.UserRepository;
 import com.example.talktopi.global.jwt.TokenProvider;
 import com.example.talktopi.global.s3.AwsS3Service;
@@ -40,5 +44,20 @@ public class AuthService {
                 .profile_image(s3FileName)
                 .build();
         userRepository.save(user);
+    }
+
+    @Transactional
+    public TokenResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(UserNotFoundException::new);
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
+            throw new PasswordNotMatchesException();
+
+        String accessToken = tokenProvider.createAccessToken(request.getEmail());
+        String refreshToken = tokenProvider.createRefreshToken(request.getEmail());
+
+        return TokenResponse.builder()
+                .access(accessToken)
+                .refresh(refreshToken)
+                .build();
     }
 }
