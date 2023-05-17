@@ -1,5 +1,6 @@
 package com.example.talktopi.domain.user.service;
 
+import com.example.talktopi.domain.user.controller.dto.request.EditProfileRequest;
 import com.example.talktopi.domain.user.controller.dto.response.UserResponse;
 import com.example.talktopi.domain.user.entity.User;
 import com.example.talktopi.domain.user.exception.UserNotFoundException;
@@ -9,6 +10,9 @@ import com.example.talktopi.global.util.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +54,13 @@ public class UserService {
                 .address(user.getAddress())
                 .introduction(user.getIntroduction())
                 .build();
+    }
+
+    @Transactional
+    public void editMyProfile(EditProfileRequest request, MultipartFile img) throws IOException {
+        User user = userRepository.findByEmail(SecurityUtil.getEmail()).orElseThrow(UserNotFoundException::new);
+        awsS3Service.deleteImage(user.getProfile_image());
+        String s3ImgName = awsS3Service.upload(img);
+        user.editProfile(request, s3ImgName);
     }
 }
