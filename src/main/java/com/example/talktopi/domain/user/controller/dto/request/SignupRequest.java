@@ -21,6 +21,5 @@ public class SignupRequest {
     private String nickname;
     private int age;
     private String mbti;
-    private MultipartFile profile_image;
     private String job;
 }
