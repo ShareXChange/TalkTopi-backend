@@ -14,7 +14,7 @@ import java.io.IOException;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/getMyProfile")
+    @GetMapping("/mypage")
     public UserResponse getMyProfile() {
         return userService.getMyProfile();
     }
@@ -24,7 +24,7 @@ public class UserController {
         return userService.getProfile(email);
     }
 
-    @PatchMapping("/editProfile")
+    @PatchMapping("/mypage")
     public void editProfile(@RequestPart EditProfileRequest request,
                             @RequestPart MultipartFile img) throws IOException {
         userService.editMyProfile(request, img);
