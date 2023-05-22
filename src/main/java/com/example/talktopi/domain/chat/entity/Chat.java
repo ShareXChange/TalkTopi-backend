@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Data
 @Document(collation = "TalkTopi")
 public class Chat {
@@ -14,5 +16,5 @@ public class Chat {
     private String sender_name;
     private Integer receiver_idx;
     private Integer room_num;
-    private String createdAt;
+    private LocalDateTime createdAt;
 }
