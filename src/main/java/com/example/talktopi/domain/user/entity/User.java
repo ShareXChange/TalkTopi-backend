@@ -1,5 +1,6 @@
 package com.example.talktopi.domain.user.entity;
 
+import com.example.talktopi.domain.user.controller.dto.request.EditProfileRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,6 +53,16 @@ public class User {
     @Column
     private String introduction;
 
-    @Column
-    private int manner;
+    public void editProfile(EditProfileRequest request, String s3ImgName) {
+        this.gender = request.getGender();
+        this.age = request.getAge();
+        this.job = request.getJob();
+        this.mbti = request.getMbti();
+        this.name = request.getName();
+        this.profile_image = s3ImgName;
+        this.hobby = request.getHobby();
+        this.nickname = request.getNickname();
+        this.address = request.getAddress();
+        this.introduction = request.getIntroduction();
+    }
 }
