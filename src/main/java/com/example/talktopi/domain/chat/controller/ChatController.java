@@ -17,9 +17,9 @@ public class ChatController {
     private final ChatRepository chatRepository;
 
     @PostMapping("/chat")
-    public Mono<Chat> sendMessage(@RequestBody Chat chat) {
+    public void sendMessage(@RequestBody Chat chat) {
         chat.setCreatedAt(LocalDateTime.now());
-        return chatRepository.save(chat);
+        chatRepository.save(chat);
     }
 
     @CrossOrigin
@@ -30,7 +30,7 @@ public class ChatController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/room/{roomNum}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "chat/room/{roomNum}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Chat> getRoomMsg(@PathVariable int roomNum) {
         return chatRepository.mFindByRoomNum(roomNum)
                 .subscribeOn(Schedulers.boundedElastic());
