@@ -12,8 +12,8 @@ public enum ErrorCode {
 
     //404
     USER_NOT_FOUND(404, "user not found"),
-    ROOM_NOT_FOUND(404, "room not found");
-
+    ROOM_NOT_FOUND(404, "room not found"),
+    COMMUNITY_NOT_FOUND(404, "community not found exception");
 
     private final int httpStatus;
     private final String message;
